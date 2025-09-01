@@ -70,8 +70,7 @@ Gemini API Key: AIzaSyC9X4xF2hG8kL3mN5pQ7rS9tU6vW8yZ...
 Pinecone API Key: 12345678-1234-1234-1234-123456789abc
 Pinecone Host: https://web-helper-index-abc123.svc.gcp-starter.pinecone.io
 ```
-#### Video example
-https://github.com/user-attachments/assets/bb3d461c-118e-4654-8294-5056de68c14b
+
 
 ## 🎯 How to Use
 
