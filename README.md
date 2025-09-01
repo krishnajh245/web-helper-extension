@@ -1,4 +1,4 @@
-# web-helper-extension
+
 # 🤖 Web Helper - AI Assistant Chrome Extension
 
 A powerful Chrome extension that extracts content from web pages and enables AI-powered question answering using vector embeddings and RAG (Retrieval-Augmented Generation) technology.
