@@ -1,0 +1,15 @@
+{
+  "name": "web-helper-extension",
+  "version": "1.0.0",
+  "description": "Simple Chrome extension for extracting and questioning webpage content",
+  "scripts": {
+    "build": "echo 'Extension files ready for Chrome'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "content-extraction",
+    "rag"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web helper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 400px;
+            min-height: 500px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .container {
+            background: white;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .query-section {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .query-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .query-input:focus {
+            border-color: #667eea;
+        }
+
+        .query-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5a67d8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-extract {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-extract:hover:not(:disabled) {
+            background: linear-gradient(45deg, #38a169, #2f855a);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-extract:disabled {
+            background: #a0aec0;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .extract-status {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .extract-status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .extract-status.processing {
+            background: #bee3f8;
+            color: #2b6cb0;
+            border: 1px solid #90cdf4;
+        }
+
+        .extract-status.error {
+            background: #fed7d7;
+            color: #822727;
+            border: 1px solid #feb2b2;
+        }
+
+        .extract-progress {
+            width: 100%;
+            height: 3px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .extract-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .results {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #718096;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .answer-card {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .answer-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+
+        .confidence {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .confidence.high { background: #c6f6d5; color: #22543d; }
+        .confidence.medium { background: #feebc8; color: #9c4221; }
+        .confidence.low { background: #fed7d7; color: #822727; }
+
+        .sources {
+            margin-top: 12px;
+        }
+
+        .sources-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .source-item {
+            display: block;
+            padding: 6px 0;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .source-item:hover {
+            color: #5a67d8;
+        }
+
+        .source-title {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .source-domain {
+            color: #718096;
+            font-size: 11px;
+        }
+
+        .history-section {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .history-item:hover {
+            background: #f7fafc;
+        }
+
+        .history-query {
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+
+        .history-time {
+            font-size: 11px;
+            color: #a0aec0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #a0aec0;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #718096;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #667eea;
+            background: white;
+            border-top: 2px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .error-message {
+            background: #fed7d7;
+            color: #822727;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* Improved Extract Button Animations */
+        .btn-extract.processing::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .page-info {
+            background: #edf2f7;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+
+        .page-info-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 Web helper</h1>
+        <p>Ask questions about your browsed pages</p>
+    </div>
+
+    <div class="container">
+        <div class="query-section">
+            <input 
+                type="text" 
+                id="queryInput" 
+                class="query-input" 
+                placeholder="Ask me anything about your browsed pages..."
+                autofocus
+            >
+            <div class="buttons">
+                <button id="searchBtn" class="btn btn-primary">🔍 Search</button>
+                <button id="extractBtn" class="btn btn-extract">📤 Extract Page</button>
+            </div>
+            <div id="extractStatus" class="extract-status" style="display: none;">
+                <div class="extract-progress">
+                    <div id="extractProgressBar" class="extract-progress-bar"></div>
+                </div>
+            </div>
+            <div id="pageInfo" class="page-info" style="display: none;">
+                <div class="page-info-title">Current Page:</div>
+                <div id="pageInfoContent"></div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="results">Results</button>
+            <button class="tab" data-tab="history">History</button>
+        </div>
+
+        <div class="results">
+            <div id="resultsContent" class="tab-content active">
+                <div class="empty-state">
+                    <div class="empty-icon">🔍</div>
+                    <p>Ask a question to get started!</p>
+                    <small>First extract a page, then ask questions about it</small>
+                </div>
+            </div>
+
+            <div id="historyContent" class="tab-content">
+                <div class="history-section" id="historyList">
+                    <div class="empty-state">
+                        <div class="empty-icon">📜</div>
+                        <p>No search history yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="popup.js"></script>
+</body>
+</html>

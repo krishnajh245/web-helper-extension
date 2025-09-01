@@ -1,0 +1,51 @@
+{
+    "manifest_version": 3,
+    "name": "Web helper - AI Assistant",
+    "version": "1.0",
+    "description": "AI-powered assistant that learns from your browsed pages and answers questions",
+    
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting",
+        "tabs",
+        "notifications",
+        "contextMenus"
+    ],
+    
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    
+    "background": {
+        "service_worker": "background.js"
+    },
+    
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Web Helper - Extract and ask questions about pages"
+    },
+    
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "final.js", 
+                "browser-embedding.js", 
+                "browser-query.js"
+            ],
+            "matches": ["<all_urls>"]
+        }
+    ],
+    
+    "options_page": "options.html",
+    
+    "commands": {
+        "quick_extract": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+E",
+                "mac": "Command+Shift+E"
+            },
+            "description": "Extract content from current page"
+        }
+    }
+}
