@@ -14,6 +14,7 @@ A powerful Chrome extension that extracts content from web pages and enables AI-
 - **📚 Search History**: Keep track of your queries and answers
 ## Video Demo
 https://github.com/user-attachments/assets/48de4dd9-4369-4408-8200-face19e33b01
+https://github.com/user-attachments/assets/1545621f-a3dd-4ec7-a396-2799a1dd4ca3
 ## 🚀 Quick Start
 
 ### Prerequisites
